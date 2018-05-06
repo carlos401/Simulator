@@ -8,8 +8,6 @@
 
 package com.io;
 
-import java.util.List;
-
 import static com.io.Kind.*;
 
 public class Main {
