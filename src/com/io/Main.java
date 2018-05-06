@@ -8,6 +8,8 @@
 
 package com.io;
 
+import java.util.List;
+
 import static com.io.Kind.*;
 
 public class Main {
@@ -24,7 +26,7 @@ public class Main {
         while(clientsAttended<15) { //we will serve 15 clients / calls
             e = sim.getEvent();
             sim.setClock(e.getTime());
-            java.lang.System.out.println("CLOCK: " + sim.getClock());
+            java.lang.System.out.println("CLOCK TIME: " + sim.getClock());
             if (e.getKind().equals(ARRIVAL)) {
                 if (sim.isFull()) {
                     sim.increaseClientsWaiting();
@@ -52,12 +54,16 @@ public class Main {
             sim.printListOfEvents();
             java.lang.System.out.println();
         }
+        java.lang.System.out.println("STATICS AT THE END OF SIMULATION");
         java.lang.System.out.println("Clients attended: " + clientsAttended);
-        java.lang.System.out.println("Clients in waiting queue: " + sim.getClientsWaiting());
+        java.lang.System.out.println("Clients waiting in queue: " + sim.getClientsWaiting());
+        java.lang.System.out.println("Average time in queue: " + sim.getAverageTimeInQueue());
     }
 
     public static void main(String[] args) {
         Main test = new Main();
         test.run();
+        java.lang.System.out.println();
+        java.lang.System.out.println("Carlos Delgado Rojas. Software developed for academic purposes. 2018.");
     }
 }

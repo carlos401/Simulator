@@ -9,6 +9,8 @@
 package com.io;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.PriorityQueue;
 
 public class System {
@@ -38,6 +40,12 @@ public class System {
     private int clock;
 
     /**
+     * These two structures are used to compute the average time in queue
+     */
+    private PriorityQueue<Integer> timeAddedToQueue;
+    private List<Integer> timeInQueue;
+
+    /**
      * Constructor
      * @param servers the number of servers for this system
      */
@@ -47,6 +55,8 @@ public class System {
         this.numberOfServers = servers;
         this.listOfEvents = new PriorityQueue<>();
         this.clock = 0;
+        this.timeAddedToQueue = new PriorityQueue<>();
+        this.timeInQueue = new LinkedList<>();
     }
 
     /**
@@ -102,6 +112,7 @@ public class System {
      */
     public void increaseClientsWaiting(){
         ++this.clientsWaiting;
+        this.timeAddedToQueue.add(this.getClock());
      }
 
     /**
@@ -116,6 +127,7 @@ public class System {
      */
     public void decreaseClientsWaiting(){
         --this.clientsWaiting;
+        this.timeInQueue.add(this.getClock()-this.timeAddedToQueue.poll());
      }
 
     /**
@@ -153,5 +165,21 @@ public class System {
             java.lang.System.out.println("kind: " + e.getKind() + " Time: " + e.getTime());
         }
         java.lang.System.out.println("END OF LIST OF EVENTS");
+    }
+
+    /**
+     * Allows to kwnow the average time of events in queue
+     * @return the average time in queue
+     */
+    public double getAverageTimeInQueue(){
+        if(this.areClientsWaiting()){
+            this.timeInQueue.add((this.getClock()+1)-this.timeAddedToQueue.poll());
+        }
+        int sum = 0;
+        Iterator<Integer> ite = this.timeInQueue.iterator();
+        while(ite.hasNext()){
+            sum = sum + ite.next();
+        }
+        return sum/this.timeInQueue.size();
     }
 }
